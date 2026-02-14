@@ -1,0 +1,139 @@
+
+C:\SPBS\frontend\src\App.jsx
+  12:10  error  'getCurrentUser' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\SPBS\frontend\src\pages\AdminDashboard.jsx
+  21:9   error  Error: Cannot access variable before it is declared
+
+`fetchCourses` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  19 |
+  20 |     useEffect(() => {
+> 21 |         fetchCourses();
+     |         ^^^^^^^^^^^^ `fetchCourses` accessed before it is declared
+  22 |         fetchSystemStats();
+  23 |     }, []);
+  24 |
+
+  23 |     }, []);
+  24 |
+> 25 |     const fetchCourses = async () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 26 |         try {
+     | ^^^^^^^^^^^^^
+> 27 |             const data = await getCourses();
+     | ^^^^^^^^^^^^^
+> 28 |             setCourses(data);
+     | ^^^^^^^^^^^^^
+> 29 |         } catch (err) {
+     | ^^^^^^^^^^^^^
+> 30 |             console.error(err);
+     | ^^^^^^^^^^^^^
+> 31 |         }
+     | ^^^^^^^^^^^^^
+> 32 |     };
+     | ^^^^^^^ `fetchCourses` is declared here
+  33 |
+  34 |     const fetchSystemStats = async () => {
+  35 |         try {                                                                                    react-hooks/immutability
+  22:9   error  Error: Cannot access variable before it is declared
+
+`fetchSystemStats` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  20 |     useEffect(() => {
+  21 |         fetchCourses();
+> 22 |         fetchSystemStats();
+     |         ^^^^^^^^^^^^^^^^ `fetchSystemStats` accessed before it is declared
+  23 |     }, []);
+  24 |
+  25 |     const fetchCourses = async () => {
+
+  32 |     };
+  33 |
+> 34 |     const fetchSystemStats = async () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 35 |         try {
+     | ^^^^^^^^^^^^^
+> 36 |             const stats = await getSystemStats();
+     | ^^^^^^^^^^^^^
+> 37 |             setSystemStats(stats);
+     | ^^^^^^^^^^^^^
+> 38 |         } catch (err) {
+     | ^^^^^^^^^^^^^
+> 39 |             console.error(err);
+     | ^^^^^^^^^^^^^
+> 40 |         }
+     | ^^^^^^^^^^^^^
+> 41 |     };
+     | ^^^^^^^ `fetchSystemStats` is declared here
+  42 |
+  43 |     const handleAddCourse = async (e) => {
+  44 |         e.preventDefault();  react-hooks/immutability
+  50:18  error  'err' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              no-unused-vars
+
+C:\SPBS\frontend\src\pages\FacultyDashboard.jsx
+  24:13  error  Error: Cannot access variable before it is declared
+
+`fetchData` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  22 |     useEffect(() => {
+  23 |         if (user) {
+> 24 |             fetchData();
+     |             ^^^^^^^^^ `fetchData` accessed before it is declared
+  25 |         }
+  26 |     }, [user]);
+  27 |
+
+  26 |     }, [user]);
+  27 |
+> 28 |     const fetchData = async () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 29 |         try {
+     | ^^^^^^^^^^^^^
+> 30 |             const prof = await getFacultyProfile(user.id);
+     ???
+     | ^^^^^^^^^^^^^
+> 40 |         }
+     | ^^^^^^^^^^^^^
+> 41 |     };
+     | ^^^^^^^ `fetchData` is declared here
+  42 |
+  43 |     const handleCourseSelect = async (courseId) => {
+  44 |         setSelectedCourse(courseId);  react-hooks/immutability
+  83:18  error  'err' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-unused-vars
+
+C:\SPBS\frontend\src\pages\Reports.jsx
+  9:11  error  'user' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\SPBS\frontend\src\pages\StudentDashboard.jsx
+  17:13  error  Error: Cannot access variable before it is declared
+
+`fetchData` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  15 |     useEffect(() => {
+  16 |         if (user) {
+> 17 |             fetchData();
+     |             ^^^^^^^^^ `fetchData` accessed before it is declared
+  18 |         }
+  19 |     }, [user]);
+  20 |
+
+  19 |     }, [user]);
+  20 |
+> 21 |     const fetchData = async () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 22 |         try {
+     | ^^^^^^^^^^^^^
+> 23 |             const profData = await getStudentProfile(user.id);
+     ???
+     | ^^^^^^^^^^^^^
+> 33 |         }
+     | ^^^^^^^^^^^^^
+> 34 |     };
+     | ^^^^^^^ `fetchData` is declared here
+  35 |
+  36 |
+  37 |     return (  react-hooks/immutability
+
+??? 8 problems (8 errors, 0 warnings)
+
