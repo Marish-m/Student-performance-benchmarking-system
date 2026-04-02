@@ -3,13 +3,23 @@ import Sidebar from '../components/Sidebar';
 import { Moon, Sun, Bell, Globe, Lock, Eye, Palette } from 'lucide-react';
 
 const Settings = () => {
-    const [theme, setTheme] = useState('dark');
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
     const [notifications, setNotifications] = useState({
         email: true,
         push: false,
         results: true,
         attendance: true
     });
+
+    const handleThemeChange = (newTheme) => {
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+        if (newTheme === 'light') {
+            document.body.classList.add('light-theme');
+        } else {
+            document.body.classList.remove('light-theme');
+        }
+    };
 
     const toggleNotification = (key) => {
         setNotifications(prev => ({ ...prev, [key]: !prev[key] }));
@@ -34,11 +44,11 @@ const Settings = () => {
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                                 <div
-                                    onClick={() => setTheme('dark')}
+                                    onClick={() => handleThemeChange('dark')}
                                     style={{
                                         padding: '20px',
                                         borderRadius: '16px',
-                                        background: theme === 'dark' ? 'rgba(99, 102, 241, 0.1)' : 'var(--bg-main)',
+                                        background: theme === 'dark' ? 'rgba(168, 85, 247, 0.1)' : 'var(--bg-main)',
                                         border: theme === 'dark' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
                                         cursor: 'pointer',
                                         transition: 'all 0.2s'
@@ -49,26 +59,26 @@ const Settings = () => {
                                         {theme === 'dark' && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)' }}></div>}
                                     </div>
                                     <h4 style={{ marginBottom: '4px' }}>Deep Night</h4>
-                                    <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>The default sleek dark mode (Current)</p>
+                                    <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>The default sleek dark mode</p>
                                 </div>
 
                                 <div
-                                    onClick={() => setTheme('glass')}
+                                    onClick={() => handleThemeChange('light')}
                                     style={{
                                         padding: '20px',
                                         borderRadius: '16px',
-                                        background: theme === 'glass' ? 'rgba(99, 102, 241, 0.1)' : 'var(--bg-main)',
-                                        border: theme === 'glass' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                                        background: theme === 'light' ? 'rgba(168, 85, 247, 0.1)' : 'var(--bg-main)',
+                                        border: theme === 'light' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
                                         cursor: 'pointer',
-                                        transition: 'all 0.2s',
-                                        opacity: 0.6
+                                        transition: 'all 0.2s'
                                     }}
                                 >
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                        <Eye size={20} style={{ color: 'var(--text-muted)' }} />
+                                        <Sun size={20} style={{ color: theme === 'light' ? 'var(--primary)' : 'var(--text-muted)' }} />
+                                        {theme === 'light' && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)' }}></div>}
                                     </div>
-                                    <h4 style={{ marginBottom: '4px' }}>Glassmorphism</h4>
-                                    <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Translucent panels and blur (Coming Soon)</p>
+                                    <h4 style={{ marginBottom: '4px' }}>Pure Light</h4>
+                                    <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Clean and bright workspace</p>
                                 </div>
                             </div>
                         </section>

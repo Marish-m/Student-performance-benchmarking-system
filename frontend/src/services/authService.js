@@ -1,12 +1,21 @@
 import axios from 'axios';
-import { MOCK_USERS } from './mockData';
+import { MOCK_USERS, ALL_MOCK_USERS } from './mockData';
 
 const API_URL = 'http://localhost:5000/api/auth';
 export const USE_MOCK = true; // Central mock toggle
 
 export const login = async (email, password) => {
     if (USE_MOCK) {
-        const user = Object.values(MOCK_USERS).find(u => u.email === email && u.password === password);
+        // First check standard mock users
+        let user = Object.values(MOCK_USERS).find(u => u.email === email && u.password === password);
+
+        // If not found, check the extended generated student list
+        if (!user) {
+            user = ALL_MOCK_USERS.find(u =>
+                u.email.toLowerCase() === email.toLowerCase() &&
+                (u.role === 'student' ? u.first_name.toLowerCase() === password.toLowerCase() : u.password === password)
+            );
+        }
 
         if (user) {
             localStorage.setItem('user', JSON.stringify(user));
@@ -15,7 +24,7 @@ export const login = async (email, password) => {
         throw new Error('Wrong password or mailid');
     }
 
-    const response = await axios.post(`${API_URL}/login`, { username, password });
+    const response = await axios.post(`${API_URL}/login`, { username: email, password });
     if (response.data.token) {
         localStorage.setItem('user', JSON.stringify(response.data));
     }

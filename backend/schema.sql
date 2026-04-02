@@ -23,6 +23,18 @@ CREATE TABLE IF NOT EXISTS students (
     department VARCHAR(100) NOT NULL,
     semester INT NOT NULL,
     section VARCHAR(10),
+    current_arrears INT DEFAULT 0,
+    bench_marking INT DEFAULT 0,
+    dob DATE,
+    gender VARCHAR(20),
+    blood_group VARCHAR(10),
+    phone VARCHAR(20),
+    address TEXT,
+    academic_year VARCHAR(20),
+    joining_date DATE,
+    skills TEXT,
+    guardian_name VARCHAR(100),
+    emergency_contact VARCHAR(20),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -35,6 +47,13 @@ CREATE TABLE IF NOT EXISTS faculty (
     last_name VARCHAR(50) NOT NULL,
     department VARCHAR(100) NOT NULL,
     designation VARCHAR(100),
+    dob DATE,
+    gender VARCHAR(20),
+    blood_group VARCHAR(10),
+    phone VARCHAR(20),
+    address TEXT,
+    joining_date DATE,
+    expertise TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 

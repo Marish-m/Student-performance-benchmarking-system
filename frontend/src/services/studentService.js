@@ -15,8 +15,19 @@ export const getStudentProfile = async (userId) => {
         roll_number: 'S101',
         first_name: 'Marish',
         last_name: 'M',
-        department: 'Computer Science',
-        semester: 4
+        department: 'Electronics and Communication Engineerinng',
+        semester: 6,
+        academic_year: '2023-2027',
+        dob: '2005-04-12',
+        gender: 'Male',
+        joining_date: '2023-08-15',
+        blood_group: 'AB+',
+        parent_name: 'Marimuthu C',
+        emergency_contact: '+91 987 654 321',
+        skills: ['JavaScript', 'React', 'Python', 'UI Design', 'Data Structures'],
+        email: 'marish.m@university.edu',
+        phone: '+91 9234 567 890',
+        address: '123 Campus Lane, Tech City, 560001'
     };
     const response = await axios.get(`${API_URL}/${userId}/profile`, getAuthHeader());
     return response.data;

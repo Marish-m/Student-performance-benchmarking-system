@@ -10,13 +10,12 @@ const seedDB = async () => {
         await pool.execute('INSERT IGNORE INTO users (username, password, role, email) VALUES (?, ?, ?, ?)', ['faculty1', hashedPassword, 'faculty', 'f1@spbs.com']);
         await pool.execute('INSERT IGNORE INTO users (username, password, role, email) VALUES (?, ?, ?, ?)', ['student1', hashedPassword, 'student', 's1@spbs.com']);
 
-        // const [[userAdmin]] = await pool.execute('SELECT id FROM users WHERE username="admin"');
         const [[userF1]] = await pool.execute('SELECT id FROM users WHERE username="faculty1"');
         const [[userS1]] = await pool.execute('SELECT id FROM users WHERE username="student1"');
 
         // 2. Profiles
         await pool.execute('INSERT IGNORE INTO faculty (user_id, faculty_id, first_name, last_name, department, designation) VALUES (?, ?, ?, ?, ?, ?)', [userF1.id, 'F001', 'John', 'Smith', 'Computer Science', 'Professor']);
-        await pool.execute('INSERT IGNORE INTO students (user_id, roll_number, first_name, last_name, department, semester, section) VALUES (?, ?, ?, ?, ?, ?, ?)', [userS1.id, 'S101', 'Alice', 'Wonder', 'Computer Science', 4, 'A']);
+        await pool.execute('INSERT IGNORE INTO students (user_id, roll_number, first_name, last_name, department, semester, section, current_arrears, bench_marking) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [userS1.id, 'S101', 'Alice', 'Wonder', 'Computer Science', 4, 'A', 0, 85]);
 
         // 3. Courses
         await pool.execute('INSERT IGNORE INTO courses (course_code, course_name, department, semester, credits) VALUES (?, ?, ?, ?, ?)', ['CS201', 'Data Structures', 'Computer Science', 4, 4]);

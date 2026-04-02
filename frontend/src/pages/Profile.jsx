@@ -3,7 +3,7 @@ import { getCurrentUser } from '../services/authService';
 import { getStudentProfile } from '../services/studentService';
 import { getFacultyProfile } from '../services/facultyService';
 import Sidebar from '../components/Sidebar';
-import { User, Mail, Shield, Phone, MapPin, Edit2, Check, X } from 'lucide-react';
+import { User, Mail, Shield, Phone, MapPin, Edit2, Check, X, Calendar, Heart, Users, Award, Briefcase, GraduationCap } from 'lucide-react';
 
 const Profile = () => {
     const user = getCurrentUser();
@@ -15,15 +15,32 @@ const Profile = () => {
         const fetchProfile = async () => {
             if (user?.role === 'student') {
                 const data = await getStudentProfile(user.id);
-                setProfile({ ...data, email: 'marish.m@university.edu', phone: '+1 234 567 890', address: '123 Campus Lane' });
-                setEditData({ ...data, email: 'marish.m@university.edu', phone: '+1 234 567 890', address: '123 Campus Lane' });
+                setProfile(data);
+                setEditData(data);
             } else if (user?.role === 'faculty') {
                 const data = await getFacultyProfile(user.id);
-                setProfile({ ...data, email: 'karthikeyan.m@university.edu', phone: '+1 987 654 321', address: '456 Faculty Court' });
-                setEditData({ ...data, email: 'karthikeyan.m@university.edu', phone: '+1 987 654 321', address: '456 Faculty Court' });
+                const facultyData = {
+                    ...data,
+                    email: 'karthikeyan.m@university.edu',
+                    phone: '+91 9876 54321',
+                    address: '456 Faculty Court',
+                    designation: 'Senior Professor II',
+                    expertise: ['Machine Learning', 'Database Optimization', 'Algorithm Design'],
+                    joining_date: '2015-06-10'
+                };
+                setProfile(facultyData);
+                setEditData(facultyData);
             } else {
-                setProfile({ first_name: 'System', last_name: 'Admin', role: 'admin', email: 'admin@spbs.com' });
-                setEditData({ first_name: 'System', last_name: 'Admin', role: 'admin', email: 'admin@spbs.com' });
+                const adminData = {
+                    first_name: 'System',
+                    last_name: 'Admin',
+                    role: 'admin',
+                    email: 'admin@spbs.com',
+                    phone: '+91 9657849734',
+                    employee_id: 'ADM_001'
+                };
+                setProfile(adminData);
+                setEditData(adminData);
             }
         };
         fetchProfile();
@@ -106,80 +123,154 @@ const Profile = () => {
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
                                 <div>
-                                    <h3 style={{ fontSize: '24px', marginBottom: '4px' }}>{profile.first_name} {profile.last_name}</h3>
-                                    <p style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Shield size={14} /> {profile.role || user.role} | {profile.department || 'Administration'}
-                                    </p>
+                                    <h3 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '8px' }}>{profile.first_name} {profile.last_name}</h3>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                                        <p style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+                                            <Shield size={14} style={{ color: 'var(--primary)' }} /> {profile.role || user.role}
+                                        </p>
+                                        <p style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+                                            <GraduationCap size={14} style={{ color: 'var(--primary)' }} /> {profile.department || 'Administration'}
+                                        </p>
+                                        {profile.semester && (
+                                            <p style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+                                                <Calendar size={14} style={{ color: 'var(--primary)' }} /> Semester {profile.semester}
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
-                            <hr style={{ margin: '40px 0', border: 'none', borderTop: '1px solid var(--border-color)' }} />
-
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                                    <label style={{ display: 'block' }}>
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'block', marginBottom: '8px' }}>First Name</span>
-                                        <input
-                                            disabled={!isEditing}
-                                            value={editData.first_name}
-                                            onChange={e => setEditData({ ...editData, first_name: e.target.value })}
-                                            style={{ width: '100%', padding: '12px', borderRadius: '8px', background: isEditing ? 'var(--bg-main)' : 'transparent', color: 'white', border: isEditing ? '1px solid var(--primary)' : '1px solid transparent' }}
-                                        />
-                                    </label>
-                                    <label style={{ display: 'block' }}>
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'block', marginBottom: '8px' }}>Last Name</span>
-                                        <input
-                                            disabled={!isEditing}
-                                            value={editData.last_name}
-                                            onChange={e => setEditData({ ...editData, last_name: e.target.value })}
-                                            style={{ width: '100%', padding: '12px', borderRadius: '8px', background: isEditing ? 'var(--bg-main)' : 'transparent', color: 'white', border: isEditing ? '1px solid var(--primary)' : '1px solid transparent' }}
-                                        />
-                                    </label>
-                                    <label style={{ display: 'block' }}>
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'block', marginBottom: '8px' }}>Email Address</span>
-                                        <div style={{ position: 'relative' }}>
-                                            <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                                            <input
-                                                disabled={!isEditing}
-                                                value={editData.email}
-                                                onChange={e => setEditData({ ...editData, email: e.target.value })}
-                                                style={{ width: '100%', padding: '12px 12px 12px 40px', borderRadius: '8px', background: isEditing ? 'var(--bg-main)' : 'transparent', color: 'white', border: isEditing ? '1px solid var(--primary)' : '1px solid transparent' }}
-                                            />
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', marginTop: '40px' }}>
+                                {/* Left Column: Personal & Contact */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                                    <section>
+                                        <h4 style={{ fontSize: '14px', color: 'var(--primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Personal Details</h4>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                                <div className="profile-field">
+                                                    <span style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginBottom: '6px' }}>Date of Birth</span>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                        <Calendar size={16} color="var(--text-muted)" />
+                                                        <span>{profile.dob || 'N/A'}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="profile-field">
+                                                    <span style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginBottom: '6px' }}>Gender</span>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                        <User size={16} color="var(--text-muted)" />
+                                                        <span>{profile.gender || 'N/A'}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="profile-field">
+                                                <span style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginBottom: '6px' }}>Blood Group</span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                    <Heart size={16} color="#ef4444" />
+                                                    <span>{profile.blood_group || 'N/A'}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </label>
+                                    </section>
+
+                                    <section>
+                                        <h4 style={{ fontSize: '14px', color: 'var(--primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Contact Information</h4>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                            <div className="profile-field">
+                                                <span style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginBottom: '6px' }}>Email Address</span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                    <Mail size={16} color="var(--text-muted)" />
+                                                    <span>{profile.email}</span>
+                                                </div>
+                                            </div>
+                                            <div className="profile-field">
+                                                <span style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginBottom: '6px' }}>Phone Number</span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                    <Phone size={16} color="var(--text-muted)" />
+                                                    <span>{profile.phone || 'N/A'}</span>
+                                                </div>
+                                            </div>
+                                            <div className="profile-field">
+                                                <span style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginBottom: '6px' }}>Mailing Address</span>
+                                                <div style={{ display: 'flex', alignItems: 'start', gap: '10px' }}>
+                                                    <MapPin size={16} color="var(--text-muted)" style={{ marginTop: '2px' }} />
+                                                    <span>{profile.address || 'N/A'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
                                 </div>
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                                    <label style={{ display: 'block' }}>
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'block', marginBottom: '8px' }}>Phone Number</span>
-                                        <div style={{ position: 'relative' }}>
-                                            <Phone size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                                            <input
-                                                disabled={!isEditing}
-                                                value={editData.phone}
-                                                onChange={e => setEditData({ ...editData, phone: e.target.value })}
-                                                style={{ width: '100%', padding: '12px 12px 12px 40px', borderRadius: '8px', background: isEditing ? 'var(--bg-main)' : 'transparent', color: 'white', border: isEditing ? '1px solid var(--primary)' : '1px solid transparent' }}
-                                            />
+                                {/* Right Column: Academic & Guardian */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                                    <section>
+                                        <h4 style={{ fontSize: '14px', color: 'var(--primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Academic Status</h4>
+                                        <div style={{ padding: '20px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                                <div>
+                                                    <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Student ID</span>
+                                                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'white' }}>{profile.roll_number || profile.employee_id}</div>
+                                                </div>
+                                                <div>
+                                                    <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Admission Year</span>
+                                                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'white' }}>{profile.academic_year || '2023'}</div>
+                                                </div>
+                                                <div>
+                                                    <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Joining Date</span>
+                                                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'white' }}>{profile.joining_date || 'N/A'}</div>
+                                                </div>
+                                                <div>
+                                                    <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Current Advisor</span>
+                                                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'white' }}>Prof. Rajesh K.</div>
+                                                </div>
+                                                {profile.role === 'student' || user.role === 'student' ? (
+                                                    <>
+                                                        <div>
+                                                            <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Current Arrears</span>
+                                                            <div style={{ fontWeight: 'bold', fontSize: '16px', color: profile.current_arrears > 0 ? 'var(--error)' : 'white' }}>{profile.current_arrears || '0'}</div>
+                                                        </div>
+                                                        <div>
+                                                            <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Benchmarking</span>
+                                                            <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'var(--primary)' }}>{profile.bench_marking || 'NA'}</div>
+                                                        </div>
+                                                    </>
+                                                ) : null}
+                                            </div>
                                         </div>
-                                    </label>
-                                    <label style={{ display: 'block' }}>
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'block', marginBottom: '8px' }}>Mailing Address</span>
-                                        <div style={{ position: 'relative' }}>
-                                            <MapPin size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                                            <input
-                                                disabled={!isEditing}
-                                                value={editData.address}
-                                                onChange={e => setEditData({ ...editData, address: e.target.value })}
-                                                style={{ width: '100%', padding: '12px 12px 12px 40px', borderRadius: '8px', background: isEditing ? 'var(--bg-main)' : 'transparent', color: 'white', border: isEditing ? '1px solid var(--primary)' : '1px solid transparent' }}
-                                            />
+                                    </section>
+
+                                    <section>
+                                        <h4 style={{ fontSize: '14px', color: 'var(--primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Skills & Expertise</h4>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                            {(profile.skills || profile.expertise || ['Communication', 'Teamwork', 'Problem Solving']).map(skill => (
+                                                <span key={skill} style={{
+                                                    padding: '6px 14px',
+                                                    borderRadius: '8px',
+                                                    background: 'rgba(168, 85, 247, 0.1)',
+                                                    color: 'var(--primary)',
+                                                    fontSize: '13px',
+                                                    border: '1px solid rgba(168, 85, 247, 0.2)'
+                                                }}>
+                                                    {skill}
+                                                </span>
+                                            ))}
                                         </div>
-                                    </label>
-                                    <div>
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'block', marginBottom: '8px' }}>Role Identifier</span>
-                                        <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(255,255,255,0.03)', color: 'var(--text-muted)', fontSize: '14px', border: '1px solid var(--border-color)' }}>
-                                            {profile.roll_number || profile.employee_id || 'ADMIN_ID_001'}
+                                    </section>
+
+                                    <section>
+                                        <h4 style={{ fontSize: '14px', color: 'var(--primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Family & Guardian</h4>
+                                        <div style={{ padding: '16px', background: 'rgba(239, 68, 68, 0.03)', borderRadius: '12px', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                                                <Users size={18} color="var(--error)" />
+                                                <span style={{ fontWeight: '600' }}>{profile.guardian_name || 'Emergency Contact'}</span>
+                                            </div>
+                                            <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginLeft: '30px' }}>
+                                                Relationship: Father / Primary Guardian
+                                            </div>
+                                            <div style={{ fontSize: '13px', color: 'white', fontWeight: 'bold', marginLeft: '30px', marginTop: '4px' }}>
+                                                📞 {profile.emergency_contact || 'N/A'}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </section>
                                 </div>
                             </div>
                         </div>
